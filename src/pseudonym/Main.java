@@ -6,10 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import pseudonym.encrypted_salt.EncryptedSalt;
+import pseudonym.hasher.Hmac;
 import pseudonym.pseudonymizer.Pseudonymizer;
 import pseudonym.salts_repo_model.Project;
 import pseudonym.salts_repo_model.SaltsRepo;
 import pseudonym.storage_password.StoragePassword;
+import pseudonym.normalizer.DefaultCprNormalizer;
 
 public class Main {
 
@@ -61,7 +63,7 @@ public class Main {
 
         String[] sample_cpr_numbers = new String[] { "0101001234", "010100-1234", "0201609996" };
         for (Project project : salts_repo.salts) {
-            Pseudonymizer pseudonymizer = new Pseudonymizer(project.encrypted_salt, storage_key);
+            Pseudonymizer pseudonymizer = new Pseudonymizer(project.encrypted_salt, storage_key, new DefaultCprNormalizer(), new Hmac());
 
             System.out.printf("Pseudonyms for project %s (%s):\n", project.project_id, project.shorthand_name);
 
